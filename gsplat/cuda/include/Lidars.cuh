@@ -24,6 +24,8 @@ namespace gsplat
     struct RowOffsetStructuredSpinningLidarModelParametersExt;
 }
 
+constexpr int ANGLE_TO_PIXEL_SCALING_FACTOR_INIT = 1024;
+
 // Lidar camera parameters struct (device-side)
 // TODO: Create a poper LidarModelParamters hierarchy.
 struct RowOffsetStructuredSpinningLidarModelParametersExtDevice
@@ -52,7 +54,7 @@ struct RowOffsetStructuredSpinningLidarModelParametersExtDevice
     float2 map_resolution_rad; // Grid cell size in radians [.x=azimuth, .y=elevation]
 
     // Angle to pixel scaling factor
-    static constexpr int ANGLE_TO_PIXEL_SCALING_FACTOR = 1024;
+    static constexpr int ANGLE_TO_PIXEL_SCALING_FACTOR = ANGLE_TO_PIXEL_SCALING_FACTOR_INIT;
 
     // Tiling info
     int n_bins_azimuth;
@@ -117,7 +119,7 @@ public:
 
         // Convert image point (in scaled pixel space) back to angles
         // TODO: transposing here to make it compatible with nrend/vren, this needs to be reverted later.
-        constexpr float kToAngle = 1.f / lidar.ANGLE_TO_PIXEL_SCALING_FACTOR;
+        constexpr float kToAngle = 1.f / ANGLE_TO_PIXEL_SCALING_FACTOR_INIT;
         const float elevation = image_point.x * kToAngle;
         const float azimuth = image_point.y * kToAngle;
 
